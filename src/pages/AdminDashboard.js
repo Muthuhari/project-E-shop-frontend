@@ -36,16 +36,34 @@ import React from "react";
 import { Container, Nav, Tab, Col, Row } from "react-bootstrap";
 import axios from "../axios";
 import "./AdminDashboard.css";
+//import faker from "faker";
 
 function generateRecords(count) {
   const records = [];
+  
+  // Define the generateRandomString function here
+  function generateRandomString(length) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    
+    return result;
+  }
   for (let i = 1; i <= count; i++) {
     const bgColor = i % 2 === 0 ? "#8e78fa" : "white"; // Alternating row colors
     const record = {
       id: i,
       category: `ID ${i}`,
-      quantity: `Quntity ${i}`,
+      quantity: Math.floor(Math.random() * 10) + 1,
       price: Math.floor(Math.random() * 1000) + 1,
+      units: Math.floor(Math.random() * 1000) + 1,
+      name: generateRandomString(10),
+      email: `${generateRandomString(8)}@example.com`,
+      //name: faker.name.findName(),
       backgroundColor: bgColor,
     };
     records.push(record);
@@ -77,6 +95,24 @@ function AdminDashboard() {
             <Tab.Content>
               <Tab.Pane eventKey="products">
                 {/* You can add content for the "Products" tab here */}
+                <table className="table custom-table">
+                  <thead>
+                    <tr>
+                      <th>Product ID</th>
+                      <th>Quantity</th>
+                      <th>No. of Units</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {records.map((record) => (
+                      <tr key={record.id} style={{ backgroundColor: record.backgroundColor }}>
+                        <td>{record.id}</td>
+                        <td>{record.quantity}</td>
+                        <td>{record.price}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
                 
               </Tab.Pane>
               <Tab.Pane eventKey="orders">
@@ -93,7 +129,7 @@ function AdminDashboard() {
                     {records.map((record) => (
                       <tr key={record.id} style={{ backgroundColor: record.backgroundColor }}>
                         <td>{record.id}</td>
-                        <td>{record.quntity}</td>
+                        <td>{record.quantity}</td>
                         <td>{record.units}</td>
                       </tr>
                     ))}
@@ -114,7 +150,7 @@ function AdminDashboard() {
                     {records.map((record) => (
                       <tr key={record.id} style={{ backgroundColor: record.backgroundColor }}>
                         <td>{record.id}</td>
-                        <td>{record.username}</td>
+                        <td>{record.name}</td>
                         <td>{record.email}</td>
                       </tr>
                     ))}
